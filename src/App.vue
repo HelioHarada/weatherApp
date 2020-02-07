@@ -1,6 +1,9 @@
 <template>
   <div id="app" :class="typeof weather.main != 'undefined' && weather.main.temp < 20 ? 'cloud' : ''">
     <main>
+      <div class="title">
+        <h1 align=center>Weather App</h1>
+      </div>
       <input
         @keyup="getWeatherApi()"
         type="text"
@@ -98,12 +101,18 @@ body {
 
 main {
   min-height: 100vh;
+  width: 100%;
   padding: 25px;
   background-image: linear-gradient(
     to bottom,
     rgba(0, 0, 0, 0.25),
     rgba(0, 0, 0, 0.75)
   );
+}
+main .title{
+padding: 20px;
+  color: aliceblue;
+  text-shadow: 1px 3px rgba(0, 0, 0, 0.25);
 }
 
 main .input-search {
