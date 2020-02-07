@@ -2,7 +2,7 @@
   <div id="app" :class="typeof weather.main != 'undefined' && weather.main.temp < 20 ? 'cloud' : ''">
     <main>
       <input
-        @keyup.enter="getWeatherApi()"
+        @keyup="getWeatherApi()"
         type="text"
         class="input-search"
         v-model="query"
@@ -36,7 +36,7 @@ export default {
   data() {
     return {
       api_key: "6a0911f55e69a10f13be6d19840f1632",
-      url: "http://api.openweathermap.org/data/2.5/weather?q=",
+      url: "https://api.openweathermap.org/data/2.5/weather?q=",
       query: "",
       weather: {},
       status: ""
@@ -44,6 +44,7 @@ export default {
   },
   methods: {
     async getWeatherApi() {
+      console.log("ww")
       try {
         const res = await this.$http.get(
           this.url + this.query + "&units=metric&APPID=" + this.api_key
