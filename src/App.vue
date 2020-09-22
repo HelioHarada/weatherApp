@@ -1,10 +1,9 @@
 <template>
   <!-- <div id="app" :class="typeof weather.main != 'undefined' && weather.main.temp < 20 ? 'cloud' : ''"> -->
   <div id="app" :class="background == '' ? 'clouds' : background">
-
     <main>
       <div class="title">
-        <h1 align=center>WeatherApp</h1>
+        <h1 align="center">WeatherApp</h1>
         <span class="sign">Develop by HaradaHelio</span>
       </div>
       <input
@@ -15,7 +14,7 @@
         placeholder="Procurar..."
       />
       <div class="box-info loading" v-if="loading">
-        <img src="src/assets/img/loading.svg" alt="">
+        <img src="src/assets/img/loading.svg" alt />
       </div>
       <div class="box-info" v-if="status != '' && !loading">
         <div class="location">
@@ -23,12 +22,13 @@
         </div>
         <div class="temp">
           <div class="graus">
-            <h2> {{Math.round(weather.main.temp)}}°C</h2>
+            <h2>{{Math.round(weather.main.temp)}}°C</h2>
           </div>
           <div class="status">
+
             <h2>{{status}}</h2>
-            <div >
-              <h1>{{background}}</h1>
+            <div>
+
             </div>
           </div>
         </div>
@@ -52,45 +52,45 @@ export default {
       weather: {},
       status: "",
       background: "",
-      loading: false,
+      loading: false
     };
   },
   methods: {
     async getWeatherApi() {
-
-
       try {
         this.loading = true;
         const res = await this.$http.get(
           this.url + this.query + "&units=metric&APPID=" + this.api_key
-
-
         );
         this.weather = res.body;
         this.translate(this.weather.weather[0].main);
         // console.log(this.weather)
       } catch (error) {
         console.log(error);
-      }finally{
+      } finally {
         this.loading = false;
-
       }
     },
     async translate(word) {
-      console.log(word)
+      console.log(word);
       try {
-             this.loading = true;
+        this.loading = true;
         this.background = word.toLowerCase();
-        const res = await axios.get(
-          "https://api.mymemory.translated.net/get?q=" +
-            word +
-            "!&langpair=en|pt"
-        );
-        this.status = res.data.responseData.translatedText;
-        console.log(res.data)
+        if (word == "Mist") {
+          this.status = 'garoa';
+        } else {
+          const res = await axios.get(
+            "https://api.mymemory.translated.net/get?q=" +
+              word +
+              "!&langpair=en|pt"
+          );
+          this.status = res.data.responseData.translatedText;
+        }
+
+        console.log(res.data);
       } catch (e) {
         console.log(e);
-      }finally{
+      } finally {
         this.loading = false;
       }
     }
@@ -148,8 +148,8 @@ main {
     rgba(0, 0, 0, 0.75)
   );
 }
-main .title{
-padding: 20px;
+main .title {
+  padding: 20px;
   color: aliceblue;
   text-shadow: 1px 3px rgba(0, 0, 0, 0.25);
 }
@@ -175,7 +175,7 @@ main .input-search:focus {
   box-shadow: 0px 0px 16px rgba(0, 0, 0, 0.5);
 }
 
-.loading{
+.loading {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -185,7 +185,7 @@ main .input-search:focus {
   padding: 15px;
   margin-top: 30%;
   border-radius: 16px;
-  background-color: rgba(240, 240, 240, 0.15)
+  background-color: rgba(240, 240, 240, 0.15);
 }
 
 .box-info .location {
@@ -198,7 +198,6 @@ main .input-search:focus {
 
 .box-info .temp {
   text-align: center;
-
 }
 
 .box-info .temp .graus {
@@ -207,7 +206,7 @@ main .input-search:focus {
   font-weight: 900;
   text-shadow: 1px 4px rgba(0, 0, 0, 0.25);
 
- padding: 20px 0px 20px 0px;
+  padding: 20px 0px 20px 0px;
 }
 
 .box-info .temp .status {
@@ -216,31 +215,32 @@ main .input-search:focus {
   text-shadow: 1px 4px rgba(0, 0, 0, 0.25);
 }
 
-.clouds{
-  background-image: url('./assets/img/cloud-bg.jpg')
+.clouds {
+  background-image: url("./assets/img/cloud-bg.jpg");
 }
 
-.drizzle{
-   background-image: url("./assets/img/rain.gif");
+.drizzle {
+  background-image: url("./assets/img/rain.gif");
+}
+.mist {
+  background-image: url("./assets/img/rain.gif");
 }
 
-.rain{
-   background-image: url("./assets/img/rain.gif");
+.rain {
+  background-image: url("./assets/img/rain.gif");
 }
 
-.clear{
+.clear {
   background-image: url("./assets/img/sun.jpg");
 }
 
-
-@media(min-width : 900px){
-main {
-  padding: 5% 25% 0% 25%;
-
+@media (min-width: 900px) {
+  main {
+    padding: 5% 25% 0% 25%;
   }
 }
 
-.sign{
+.sign {
   font-size: 8px;
   float: right;
 }
