@@ -1,8 +1,11 @@
 <template>
-  <div id="app" :class="typeof weather.main != 'undefined' && weather.main.temp < 20 ? 'cloud' : ''">
+  <!-- <div id="app" :class="typeof weather.main != 'undefined' && weather.main.temp < 20 ? 'cloud' : ''"> -->
+  <div id="app" :class="background == '' ? 'clouds' : background">
+
     <main>
       <div class="title">
-        <h1 align=center>Weather App</h1>
+        <h1 align=center>WeatherApp</h1>
+        <span class="sign">Develop by HaradaHelio</span>
       </div>
       <input
         @keyup="getWeatherApi()"
@@ -11,8 +14,10 @@
         v-model="query"
         placeholder="Procurar..."
       />
-
-      <div class="box-info" v-if="status != ''">
+      <div class="box-info loading" v-if="loading">
+        <img src="src/assets/img/loading.svg" alt="">
+      </div>
+      <div class="box-info" v-if="status != '' && !loading">
         <div class="location">
           <h1>{{weather.name}}, {{weather.sys.country}}</h1>
         </div>
@@ -22,6 +27,9 @@
           </div>
           <div class="status">
             <h2>{{status}}</h2>
+            <div >
+              <h1>{{background}}</h1>
+            </div>
           </div>
         </div>
       </div>
@@ -42,33 +50,48 @@ export default {
       url: "https://api.openweathermap.org/data/2.5/weather?q=",
       query: "",
       weather: {},
-      status: ""
+      status: "",
+      background: "",
+      loading: false,
     };
   },
   methods: {
     async getWeatherApi() {
-      console.log("ww")
+
+
       try {
+        this.loading = true;
         const res = await this.$http.get(
           this.url + this.query + "&units=metric&APPID=" + this.api_key
+
+
         );
         this.weather = res.body;
         this.translate(this.weather.weather[0].main);
-        console.log(this.weather)
+        // console.log(this.weather)
       } catch (error) {
         console.log(error);
+      }finally{
+        this.loading = false;
+
       }
     },
     async translate(word) {
+      console.log(word)
       try {
+             this.loading = true;
+        this.background = word.toLowerCase();
         const res = await axios.get(
           "https://api.mymemory.translated.net/get?q=" +
             word +
             "!&langpair=en|pt"
         );
         this.status = res.data.responseData.translatedText;
+        console.log(res.data)
       } catch (e) {
         console.log(e);
+      }finally{
+        this.loading = false;
       }
     }
   }
@@ -89,14 +112,30 @@ body {
 }
 
 #app {
-  background-image: url("./assets/img/sun-bg.jpg");
+  /* background-image: url('./assets/img/cloud-bg.jpg'); */
   background-size: cover;
-  background-position: top;
   transition: 0.4s ease-in-out;
+  background-attachment: fixed;
+  position: absolute;
+  transition: 0.5s ease;
+  width: 100%;
+  height: 100vh;
+  animation-name: loop;
+  animation-duration: 80s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
 }
 
-#app.cloud{
-  background-image: url('./assets/img/cloud-bg.jpg')
+@keyframes loop {
+  0% {
+    background-position: 0 0;
+  }
+  50% {
+    background-position: 100% 0;
+  }
+  100% {
+    background-position: 0 0;
+  }
 }
 
 main {
@@ -136,6 +175,12 @@ main .input-search:focus {
   box-shadow: 0px 0px 16px rgba(0, 0, 0, 0.5);
 }
 
+.loading{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .box-info {
   padding: 15px;
   margin-top: 30%;
@@ -169,5 +214,34 @@ main .input-search:focus {
   color: aliceblue;
   font-size: 24px;
   text-shadow: 1px 4px rgba(0, 0, 0, 0.25);
+}
+
+.clouds{
+  background-image: url('./assets/img/cloud-bg.jpg')
+}
+
+.drizzle{
+   background-image: url("./assets/img/rain.gif");
+}
+
+.rain{
+   background-image: url("./assets/img/rain.gif");
+}
+
+.clear{
+  background-image: url("./assets/img/sun.jpg");
+}
+
+
+@media(min-width : 900px){
+main {
+  padding: 5% 25% 0% 25%;
+
+  }
+}
+
+.sign{
+  font-size: 8px;
+  float: right;
 }
 </style>
