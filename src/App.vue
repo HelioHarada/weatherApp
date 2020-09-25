@@ -3,18 +3,26 @@
   <div id="app" :class="background == '' ? 'clouds' : background">
     <main>
       <div class="title">
-        <h1 align="center">WeatherApp</h1>
+        <h1 align="center">WeatherApp!</h1>
         <span class="sign">Develop by HaradaHelio</span>
       </div>
-      <input
-        @keyup="getWeatherApi()"
-        type="text"
-        class="input-search"
-        v-model="query"
-        placeholder="Procurar..."
-      />
+
+      <!-- input -->
+      <div class="box-input">
+        <input
+
+          @keyup.enter="getWeatherApi()"
+          type="text"
+          class="input-search"
+          v-model="query"
+          placeholder="Procurar..."
+        />
+        <div class="box-button" @click="getWeatherApi()">
+          <img src="src/assets/img/search.svg" alt="">
+        </div>
+      </div>
       <div class="box-info loading" v-if="loading">
-        <img src="src/assets/img/loading.svg" alt />
+        <img src="src/assets/img/loading.svg" alt="loading" />
       </div>
       <div class="box-info" v-if="status != '' && !loading">
         <div class="location">
@@ -25,11 +33,8 @@
             <h2>{{Math.round(weather.main.temp)}}°C</h2>
           </div>
           <div class="status">
-
             <h2>{{status}}</h2>
-            <div>
-
-            </div>
+            <div></div>
           </div>
         </div>
       </div>
@@ -77,7 +82,7 @@ export default {
         this.loading = true;
         this.background = word.toLowerCase();
         if (word == "Mist") {
-          this.status = 'garoa';
+          this.status = "garoa";
         } else {
           const res = await axios.get(
             "https://api.mymemory.translated.net/get?q=" +
@@ -86,8 +91,6 @@ export default {
           );
           this.status = res.data.responseData.translatedText;
         }
-
-        console.log(res.data);
       } catch (e) {
         console.log(e);
       } finally {
@@ -154,15 +157,35 @@ main .title {
   text-shadow: 1px 3px rgba(0, 0, 0, 0.25);
 }
 
+main .box-input {
+  display: flex;
+}
+
+main .box-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  height: 40px;
+  width: 15%;
+  border-radius: 0px 25px 25px 0px;
+  background-color: rgba(255, 255, 255, 0.5);
+  padding: 15px;
+}
+
+main .box-button img{
+  width: 24px;
+}
+
 main .input-search {
-  width: 100%;
+  width: 85%;
   height: 40px;
   margin-bottom: 20px;
   padding: 15px;
   appearance: none;
   outline: none;
   border: none;
-  border-radius: 25px;
+  border-radius: 25px 0px 0px 25px;
   font-size: 18px;
   font-family: "Roboto", sans-serif;
   color: #313131;

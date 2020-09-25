@@ -8,12 +8,12 @@ app = express ();
 app.use(serveStatic(__dirname));
 
 app.get('*', function (req, res) {
-    const index = path.join(__dirname, '/dist/index.html');
+    const index = path.join(__dirname, '/dist/cloud-bg.jpg');
     console.log(index);
     res.sendFile(index)
 });
 
-var port = process.env.PORT || 5000;
+var port = process.env.PORT || 4000;
 // passa a porta definida no Express e levantamento do servidor
 app.listen(port);
 console.log ('Servidor client iniciado na porta ' + port + '.');
