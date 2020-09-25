@@ -2,6 +2,12 @@
 
 > Weather app
 
+Weather app é um webApp que mostra a temperatura é o clima de qualquer região do mundo.
+
+#tecnologias
+
+Ele consome 2 APIs uma para obter os dados do clima e outro para tradução.
+
 ## Build Setup
 
 ``` bash
