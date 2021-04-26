@@ -6,11 +6,20 @@
         <h1 align="center">WeatherApp!</h1>
         <span class="sign">Develop by HaradaHelio</span>
       </div>
-<iframe src="https://open.spotify.com/embed/user/kygqtr117sjajepwbsktq5goh/playlist/0bt3QneTmMp17yLVHbTVTl" width="300" height="380" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+
+      <div class="music">
+        <!-- <iframe
+          src="https://open.spotify.com/embed/playlist/0bt3QneTmMp17yLVHbTVTl?si=8a50552e43c2441d"
+          width="300"
+          height="80"
+          frameborder="0"
+          allowtransparency="true"
+          allow="encrypted-media"
+        ></iframe> -->
+      </div>
       <!-- input -->
       <div class="box-input">
         <input
-
           @keyup.enter="getWeatherApi()"
           type="text"
           class="input-search"
@@ -18,7 +27,7 @@
           placeholder="Procurar..."
         />
         <div class="box-button" @click="getWeatherApi()">
-          <img src="src/assets/img/search.svg" alt="">
+          <img src="src/assets/img/search.svg" alt />
         </div>
       </div>
       <div class="box-info loading" v-if="loading">
@@ -55,6 +64,7 @@ export default {
       url: "https://api.openweathermap.org/data/2.5/weather?q=",
       query: "",
       weather: {},
+      time: "",
       status: "",
       background: "",
       loading: false
@@ -97,6 +107,15 @@ export default {
         this.loading = false;
       }
     }
+  },
+  created() {
+    var h = new Date().getHours();
+    var m = new Date().getMinutes();
+
+    h = h < 10 ? "0" + h : h;
+    m = m < 10 ? "0" + m : m;
+
+    this.time = h + ":" + m;
   }
 };
 </script>
@@ -122,7 +141,7 @@ body {
   position: absolute;
   transition: 0.5s ease;
   width: 100%;
-  height: 100vh;
+  height: 100%;
   animation-name: loop;
   animation-duration: 80s;
   animation-timing-function: linear;
@@ -157,6 +176,13 @@ main .title {
   text-shadow: 1px 3px rgba(0, 0, 0, 0.25);
 }
 
+main .music {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px;
+}
+
 main .box-input {
   display: flex;
 }
@@ -173,7 +199,7 @@ main .box-button {
   padding: 15px;
 }
 
-main .box-button img{
+main .box-button img {
   width: 24px;
 }
 
